@@ -72,6 +72,32 @@ The schema is generated automatically when the app starts, with tables for:
 - `Users`
 - `Notes`
 
+## Executable Option
+
+This project can be run either as a standard .NET app or as a self-contained Windows executable.
+
+### Standard app run
+
+```bash
+dotnet run
+```
+
+### Self-contained Windows EXE
+
+To build a self-contained Windows x64 executable that can run without installing the .NET runtime on the target machine:
+
+```bash
+dotnet publish .\NoteTakingService\NoteTakingService.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:UseAppHost=true -o .\artifacts\selfcontained-win-x64
+```
+
+This produces a runnable file at:
+
+```text
+.\artifacts\selfcontained-win-x64\NoteTakingService.exe
+```
+
+The generated EXE is local build output and is not intended to be committed to source control by default. It is appropriate for a Windows desktop or local demo environment where you want to run the API without requiring `dotnet` to be installed.
+
 ## CRUD API
 
 The .NET service includes database-backed CRUD operations for all three entities:
@@ -198,6 +224,36 @@ Invoke-RestMethod -Method Put -Uri "http://localhost:5256/api/note/1" -ContentTy
 ```powershell
 Invoke-RestMethod -Method Delete -Uri "http://localhost:5256/api/note/1"
 ```
+
+## Quick Start
+
+From the project directory:
+
+```bash
+cd NoteTakingService
+dotnet restore
+dotnet run
+```
+
+Then open:
+
+- `http://localhost:5256/docs`
+- or `http://localhost:5256/openapi/v1.json`
+
+The app listens on:
+
+- `http://localhost:5256`
+
+## Assumptions / MVP Limits
+
+This project is intentionally simple and intended for local development and evaluation.
+
+- SQLite is used for persistence, not a production-grade enterprise database
+- There is no authentication or authorization yet
+- The API exposes EF Core entities directly instead of DTOs
+- There is no pagination, filtering, or sorting
+- There is no deployment packaging or installer yet
+- This is a learning/demo app, not a hardened production service
 
 ## Running the Service
 
