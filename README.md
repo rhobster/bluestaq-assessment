@@ -9,6 +9,32 @@ Choices:
 - .NET
 - SQLite database using Entity Framework Core Code First
 
+## Key Design Choices
+
+These were the main decisions that shaped the project:
+
+1. SQLite + Entity Framework Core Code First
+   - Kept persistence simple, local, and easy to run on a developer machine.
+   - It avoids the setup overhead of a larger database while still giving us relational modeling and migrations later.
+
+2. Simple HTTP API for local development
+   - The service is intentionally lightweight and designed to work without HTTPS, auth, or complex deployment infrastructure.
+   - This keeps the project easy to start, test, and demo.
+
+3. Direct entity exposure for the initial MVP
+   - The API uses the EF Core entity models directly instead of a separate DTO layer.
+   - That keeps the project smaller and easier to understand, but it also makes the API contract less rigid than a production version would be.
+
+## What I Would Change If I Had More Time
+
+If this were being expanded beyond the MVP, I would improve the following areas:
+
+- Add DTOs and validation so the API contract is explicit and safer than exposing the database entities directly.
+- Add authentication and role-based authorization so team or user actions are protected.
+- Add automated tests and a CI pipeline to validate CRUD behavior and database setup.
+- Add pagination, filtering, and sorting for larger data sets.
+- Publish a more polished installer or deployment workflow for non-developer users.
+
 ## Schema Design
 
 This schema matches the project goals:
@@ -244,16 +270,14 @@ The app listens on:
 
 - `http://localhost:5256`
 
-## Assumptions / MVP Limits
+## Project Guardrails
 
-This project is intentionally simple and intended for local development and evaluation.
+This project is intentionally scoped for local learning and demo use.
 
 - SQLite is used for persistence, not a production-grade enterprise database
-- There is no authentication or authorization yet
-- The API exposes EF Core entities directly instead of DTOs
-- There is no pagination, filtering, or sorting
-- There is no deployment packaging or installer yet
-- This is a learning/demo app, not a hardened production service
+- No authentication or authorization is enforced at this stage
+- The API stays intentionally simple and does not add platform complexity beyond CRUD and local data storage
+- The app is built for an easy developer experience, not a full production deployment model
 
 ## Running the Service
 
